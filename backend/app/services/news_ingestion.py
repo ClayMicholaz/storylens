@@ -7,10 +7,16 @@ from app.services.scraper import run_collector
 
 load_dotenv()
 
-# HASHING
-def make_content_hash(url: str, title: str) -> str:
+# ARTICLE IDENTITY HASH
+def make_article_hash(url: str, title: str) -> str:
     raw = f"{url.strip()}::{title.strip()}"
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+# TRUE CONTENT HASH
+def make_content_hash(content: str) -> str:
+    content = content or ""
+    return hashlib.sha256(content.strip().encode("utf-8")).hexdigest()
 
 # NORMALIZATION
 def normalize_articles(articles):
@@ -18,7 +24,8 @@ def normalize_articles(articles):
     for a in articles:
         if not a.get("url") or not a.get("title"):
             continue
-        a["content_hash"] = make_content_hash(a["url"], a["title"])
+        a["article_hash"] = make_article_hash(a["url"], a["title"])
+        a["content_hash"] = make_content_hash(a.get("content") or "")
         cleaned.append(a)
 
     return cleaned
@@ -30,7 +37,7 @@ def insert_articles(session, articles):
     skipped = 0
 
     for a in articles:
-        exists = session.query(Article).filter_by(content_hash=a["content_hash"]).first()
+        exists = session.query(Article).filter_by(article_hash=a["article_hash"]).first()
         print("Checking:", a["title"][:40], exists is not None)
 
         if exists:
@@ -45,6 +52,7 @@ def insert_articles(session, articles):
             url=a["url"],
             category=a["category"],
             published_date=a["published_date"],
+            article_hash=a["article_hash"],
             content_hash=a["content_hash"],
         )
 

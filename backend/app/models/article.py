@@ -19,4 +19,6 @@ class Article(Base):
 
     published_date: Mapped[DateTime] = mapped_column(DateTime(timezone=True))
 
-    content_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    article_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+
+    content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
