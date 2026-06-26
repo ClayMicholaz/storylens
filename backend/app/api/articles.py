@@ -1,17 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.database.session import SessionLocal
+from app.database.session import SessionLocal, get_db
 from app.models.article import Article
 
 router = APIRouter()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 @router.get("/articles")
 def get_articles(db: Session = Depends(get_db)):

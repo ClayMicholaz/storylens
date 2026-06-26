@@ -146,3 +146,7 @@ wcwidth==0.6.0
 yarl==1.22.0
 yellowbrick==1.5
 zipp==3.23.0
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+python-multipart==0.0.6
+pydantic-settings==2.0.5
