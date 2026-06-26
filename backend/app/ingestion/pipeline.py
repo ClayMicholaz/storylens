@@ -2,8 +2,8 @@ import os
 import hashlib
 from dotenv import load_dotenv
 from app.database.session import SessionLocal
-from app.models.article import Article
-from app.services.scraper import run_collector
+from backend.app.articles.models import Article
+from backend.app.ingestion.scraper import run_collector
 
 load_dotenv()
 

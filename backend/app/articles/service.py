@@ -1,13 +1,9 @@
-from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.database.session import SessionLocal, get_db
-from app.models.article import Article
 
-router = APIRouter()
+from app.articles.repository import get_recent_articles
 
-@router.get("/articles")
-def get_articles(db: Session = Depends(get_db)):
-    articles = db.query(Article).order_by(Article.published_date.desc()).limit(50).all()
+def get_latest_articles(db: Session):
+    articles = get_recent_articles(db)
 
     return [
         {
