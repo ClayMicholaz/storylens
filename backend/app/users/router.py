@@ -1,6 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
-router = APIRouter()
+from backend.app.core.deps import get_current_user
 
-# TODO: add user account endpoints here
-# e.g. GET /users/me, PATCH /users/me, DELETE /users/me
+router = APIRouter(prefix="/users", tags=["Users"])
+
+
+@router.get("/me")
+def read_current_user(current_user: dict = Depends(get_current_user)):
+	return current_user

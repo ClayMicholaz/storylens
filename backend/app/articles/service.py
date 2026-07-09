@@ -6,6 +6,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
+from backend.app.articles.models import Article
 from backend.app.articles.repository import get_articles_page as repo_get_articles_page
 
 
@@ -26,7 +27,7 @@ def get_latest_articles_page(
     limit: int = 20,
     cursor: Optional[str] = None,
     category: Optional[str] = None,
-):
+)-> tuple[list[Article], dict]:
     cursor_pd, cursor_id = decode_cursor(cursor) if cursor else (None, None)
 
     items = repo_get_articles_page(
@@ -41,20 +42,7 @@ def get_latest_articles_page(
         else None
     )
 
-    data = [
-        {
-            "id": a.id,
-            "title": a.title,
-            "summary": a.summary,
-            "url": a.url,
-            "source": a.source,
-            "category": a.category,
-            "published_date": a.published_date,
-        }
-        for a in items
-    ]
-
-    return data, {
+    return items, {
         "next_cursor": next_cursor,
         "has_more": has_more,
         "limit": limit,

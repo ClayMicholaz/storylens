@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/lib/config";
+import Link from "next/link";
 
 type Article = {
   id: string;
@@ -36,11 +37,45 @@ async function getArticles(cursor?: string): Promise<ArticlesResponse> {
 }
 
 export default async function HomePage() {
-  const { data: articles } = await getArticles();
+  let articles: Article[] = [];
+  let loadError: string | null = null;
+
+  try {
+    const response = await getArticles();
+    articles = response.data;
+  } catch (error) {
+    loadError = error instanceof Error ? error.message : "Failed to load articles";
+  }
 
   return (
     <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">StoryLens</h1>
+      <div className="flex items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">StoryLens</h1>
+          <p className="text-sm text-gray-500 mt-2">
+            Curated stories with graceful failure handling.
+          </p>
+        </div>
+        <a href="/auth/login" className="text-sm underline">
+          Sign in
+        </a>
+      </div>
+
+      {loadError && (
+        <section className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-900">
+          <p className="font-medium">Articles are temporarily unavailable.</p>
+          <p className="text-sm mt-1">{loadError}</p>
+          <Link href="/" className="inline-block mt-3 underline">
+            Retry
+          </Link>
+        </section>
+      )}
+
+      {!loadError && articles.length === 0 && (
+        <section className="rounded-lg border border-dashed p-8 text-center text-gray-500">
+          No articles are available yet.
+        </section>
+      )}
 
       <div className="space-y-6">
         {articles.map((article) => (
