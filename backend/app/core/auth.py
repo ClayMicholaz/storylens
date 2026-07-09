@@ -1,5 +1,5 @@
 from jose import jwt, JWTError
-from app.core.auth_config import SUPABASE_JWT_SECRET
+from backend.app.core.auth_config import SUPABASE_JWT_SECRET
 
 def decode_token(token: str) -> dict:
     try:

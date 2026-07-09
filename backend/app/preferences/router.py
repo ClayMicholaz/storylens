@@ -1,10 +1,9 @@
-# backend/app/preferences/router.py
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user
-from app.database.session import get_db
-from app.users.models import UserPreferences
+from backend.app.core.deps import get_current_user
+from backend.app.database.session import get_db
+from backend.app.users.models import UserPreferences
 
 router = APIRouter(prefix="/preferences", tags=["preferences"])
 

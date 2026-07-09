@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "@/lib/config";
+
 type Article = {
   id: string;
   title: string;
@@ -8,20 +10,33 @@ type Article = {
   published_date: string;
 };
 
-async function getArticles(): Promise<Article[]> {
-  const res = await fetch("http://localhost:8000/api/articles", {
+type ArticlesResponse = {
+  data: Article[];
+  pagination: {
+    next_cursor: string | null;
+    has_more: boolean;
+    limit: number;
+  };
+};
+
+async function getArticles(cursor?: string): Promise<ArticlesResponse> {
+  const params = new URLSearchParams({ limit: "20" });
+  if (cursor) params.set("cursor", cursor);
+
+  const res = await fetch(`${API_BASE_URL}/api/articles?${params}`, {
     cache: "no-store",
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch articles");
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message ?? "Failed to fetch articles");
   }
 
   return res.json();
 }
 
 export default async function HomePage() {
-  const articles = await getArticles();
+  const { data: articles } = await getArticles();
 
   return (
     <main className="max-w-4xl mx-auto p-6">

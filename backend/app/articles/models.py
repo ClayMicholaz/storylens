@@ -1,9 +1,9 @@
-from uuid import UUID
+from datetime import datetime
 import uuid
 
-from sqlalchemy import Text, DateTime, String
+from sqlalchemy import Text, DateTime, String, Index
 from sqlalchemy.orm import Mapped, mapped_column
-from app.database.base import Base
+from backend.app.database.base import Base
 
 
 class Article(Base):
@@ -18,10 +18,13 @@ class Article(Base):
     source: Mapped[str] = mapped_column(Text, nullable=False)
     url: Mapped[str] = mapped_column(Text, nullable=False)
 
-    published_date: Mapped[DateTime] = mapped_column(DateTime(timezone=True))
+    published_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     category: Mapped[str] = mapped_column(Text, nullable=False)
 
     article_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
-
     content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+
+    __table_args__ = (
+        Index("ix_articles_published_id", "published_date", "id"),
+    )

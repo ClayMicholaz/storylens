@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from app.core.auth import decode_token
+from backend.app.core.auth import decode_token
 
 security = HTTPBearer()
 
