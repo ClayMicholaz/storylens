@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from backend.app.config import settings
+from app.config import settings
 from backend.app.auth.router import router as auth_router
 from backend.app.articles.router import router as articles_router
 from backend.app.preferences.router import router as preferences_router
