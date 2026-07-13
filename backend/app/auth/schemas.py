@@ -18,3 +18,6 @@ class AuthResponse(BaseModel):
     access_token: str
     refresh_token: str
     user: AuthUser
+
+class RefreshRequest(BaseModel):
+    refresh_token: str = Field(min_length=1)
