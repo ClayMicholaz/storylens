@@ -37,9 +37,11 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 def root():
     return {"message": "StoryLens API Running"}
 
-@app.get("/ping")
-def ping():
-    return {"status": "ok"}
+@app.get("/debug")
+async def debug(request: Request):
+    return {
+        "path": request.url.path
+    }
 
 app.include_router(articles_router, prefix="/api", tags=["Articles"])
 app.include_router(auth_router, prefix="/api", tags=["Auth"])
