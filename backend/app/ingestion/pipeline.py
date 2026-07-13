@@ -2,9 +2,9 @@ import os
 import hashlib
 from dotenv import load_dotenv
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from backend.app.database.session import SessionLocal
-from backend.app.articles.models import Article
-from backend.app.ingestion.scraper import run_collector
+from app.database.session import SessionLocal
+from app.articles.models import Article
+from app.ingestion.scraper import run_collector
 
 load_dotenv()
 

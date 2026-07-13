@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, tuple_
 
-from backend.app.articles.models import Article
+from app.articles.models import Article
 
 
 def get_recent_articles(db: Session):

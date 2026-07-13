@@ -4,7 +4,7 @@ from uuid import UUID
 from jose import JWTError, jwt
 import bcrypt
 
-from backend.app.core.auth_config import ALGORITHM, SECRET_KEY
+from app.core.auth_config import ALGORITHM, SECRET_KEY
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 15
 

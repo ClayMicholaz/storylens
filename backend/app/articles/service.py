@@ -6,8 +6,8 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from backend.app.articles.models import Article
-from backend.app.articles.repository import get_articles_page as repo_get_articles_page
+from app.articles.models import Article
+from app.articles.repository import get_articles_page as repo_get_articles_page
 
 
 def encode_cursor(published_date: datetime, article_id: UUID) -> str:

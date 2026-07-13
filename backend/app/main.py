@@ -5,10 +5,10 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import settings
-from backend.app.auth.router import router as auth_router
-from backend.app.articles.router import router as articles_router
-from backend.app.preferences.router import router as preferences_router
-from backend.app.users.router import router as users_router
+from app.auth.router import router as auth_router
+from app.articles.router import router as articles_router
+from app.preferences.router import router as preferences_router
+from app.users.router import router as users_router
 
 app = FastAPI(title="StoryLens API")
 

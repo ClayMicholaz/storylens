@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-from backend.app.ingestion.pipeline import run_ingestion
+from app.ingestion.pipeline import run_ingestion
 
 
 def scheduled_ingestion():

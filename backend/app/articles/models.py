@@ -3,7 +3,7 @@ import uuid
 
 from sqlalchemy import Text, DateTime, String, Index
 from sqlalchemy.orm import Mapped, mapped_column
-from backend.app.database.base import Base
+from app.database.base import Base
 
 
 class Article(Base):

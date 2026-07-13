@@ -3,9 +3,9 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from backend.app.database.session import get_db
-from backend.app.articles.schemas import PaginatedArticles
-from backend.app.articles.service import get_latest_articles_page
+from app.database.session import get_db
+from app.articles.schemas import PaginatedArticles
+from app.articles.service import get_latest_articles_page
 
 router = APIRouter()
 

@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 
-from backend.app.database.base import Base
-from backend.app.users import models as user_models
+from app.database.base import Base
+from app.users import models as user_models
 
 from logging.config import fileConfig
 
@@ -10,7 +10,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from backend.app.articles import models as article_models
+from app.articles import models as article_models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
