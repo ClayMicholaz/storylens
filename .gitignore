@@ -27,6 +27,9 @@ backend/**/*.py[cod]
 backend/.pytest_cache/
 backend/.mypy_cache/
 
+# Docs
+docs/
+
 # Environment files
 
 .env
