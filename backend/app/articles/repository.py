@@ -1,11 +1,17 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, tuple_
+from sqlalchemy import desc, tuple_, func
 
 from app.articles.models import Article
+
+
+def get_latest_article_timestamp(db: Session) -> Optional[datetime]:
+    """Get the timestamp of the most recently published article."""
+    result = db.query(func.max(Article.published_date)).scalar()
+    return result
 
 
 def get_recent_articles(db: Session):

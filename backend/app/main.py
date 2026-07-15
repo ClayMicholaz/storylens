@@ -10,6 +10,7 @@ from app.articles.router import router as articles_router
 from app.preferences.router import router as preferences_router
 from app.users.router import router as users_router
 
+
 app = FastAPI(title="StoryLens API")
 
 app.add_middleware(
@@ -41,6 +42,13 @@ def root():
 async def debug(request: Request):
     return {
         "path": request.url.path
+    }
+
+@app.get("/health")
+async def health():
+    """Health check endpoint."""
+    return {
+        "status": "ok",
     }
 
 app.include_router(articles_router, prefix="/api", tags=["Articles"])

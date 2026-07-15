@@ -53,7 +53,7 @@ export default async function HomePage() {
         <div>
           <h1 className="text-3xl font-bold">StoryLens</h1>
           <p className="text-sm text-gray-500 mt-2">
-            Curated stories with graceful failure handling.
+            Cut through the noise. Read what matters.
           </p>
         </div>
         <a href="/auth/login" className="text-sm underline">

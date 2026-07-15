@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from app.ingestion.pipeline import run_ingestion
 
 
@@ -12,8 +12,10 @@ def scheduled_ingestion():
         print(f"Scheduler error: {e}")
 
 
-scheduler = BlockingScheduler()
+# Create scheduler but don't start it - will be started by FastAPI lifespan
+scheduler = BackgroundScheduler()
 
+# Add the job - scheduler will be started later
 scheduler.add_job(
     scheduled_ingestion,
     trigger="interval",

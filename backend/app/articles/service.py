@@ -1,13 +1,30 @@
 import base64
 import json
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Session
 
 from app.articles.models import Article
-from app.articles.repository import get_articles_page as repo_get_articles_page
+from app.articles.repository import (
+    get_articles_page as repo_get_articles_page,
+    get_latest_article_timestamp,
+)
+from app.ingestion.pipeline import run_ingestion
+
+
+# Refresh interval in minutes
+REFRESH_INTERVAL_MINUTES = 10
+
+
+def should_refresh_articles(db: Session) -> bool:
+    """Check if articles need to be refreshed (older than REFRESH_INTERVAL_MINUTES)."""
+    latest = get_latest_article_timestamp(db)
+    if latest is None:
+        return True  # No articles yet, need to fetch
+    now = datetime.now(timezone.utc)
+    return (now - latest) > timedelta(minutes=REFRESH_INTERVAL_MINUTES)
 
 
 def encode_cursor(published_date: datetime, article_id: UUID) -> str:
