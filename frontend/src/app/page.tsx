@@ -58,12 +58,6 @@ export default async function HomePage() {
       
       <main className="flex-1 bg-[#FEFCF7] min-h-[calc(100vh-88px)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Tagline */}
-          <div className="mb-8 text-center">
-            <p className="text-[#8D99AE] text-sm font-medium">
-              Cut through the noise. Read what matters.
-            </p>
-          </div>
 
           {loadError && (
             <div className="mb-8 rounded-2xl border border-[#E07A5F]/30 bg-[#E07A5F]/5 p-6 text-[#E07A5F]">
