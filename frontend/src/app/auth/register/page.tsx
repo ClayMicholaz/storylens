@@ -49,18 +49,18 @@ export default function RegisterPage() {
 
   return (
     <main className="relative flex min-h-[85vh] flex-col items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
-      {/* Decorative background grid pattern / glow */}
+      {/* Decorative background glows */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-[40%] -left-[20%] h-[80%] w-[80%] rounded-full bg-indigo-500/10 blur-[120px] dark:bg-indigo-500/5" />
-        <div className="absolute -bottom-[40%] -right-[20%] h-[80%] w-[80%] rounded-full bg-violet-500/10 blur-[120px] dark:bg-violet-500/5" />
+        <div className="absolute -top-[40%] -left-[20%] h-[80%] w-[80%] rounded-full bg-terracotta/10 blur-[120px]" />
+        <div className="absolute -bottom-[40%] -right-[20%] h-[80%] w-[80%] rounded-full bg-pine/10 blur-[120px]" />
       </div>
 
       <div className="w-full max-w-md transform transition-all duration-300">
-        <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-xl shadow-zinc-200/50 dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-none sm:p-10">
+        <div className="rounded-3xl border border-pine/20 bg-card p-8 shadow-xl shadow-pine/10 sm:p-10">
           
           {/* Logo Icon & Header */}
           <div className="flex flex-col items-center text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/20">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-terracotta to-pine text-white shadow-lg shadow-terracotta/20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -76,10 +76,10 @@ export default function RegisterPage() {
                 />
               </svg>
             </div>
-            <h1 className="mt-6 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+            <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground">
               Create account
             </h1>
-            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm text-muted">
               Register your StoryLens account to get started.
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function RegisterPage() {
           {/* Form */}
           <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-muted">
                 Email Address
               </label>
               <input
@@ -95,13 +95,13 @@ export default function RegisterPage() {
                 required
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="mt-2 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-950 placeholder-zinc-400 outline-none transition-all duration-200 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder-zinc-600 dark:focus:border-indigo-500 dark:focus:bg-black"
+                className="mt-2 w-full rounded-xl border border-pine/20 bg-pine/5 px-4 py-3 text-sm text-foreground placeholder-muted outline-none transition-all duration-200 focus:border-pine focus:bg-card focus:ring-4 focus:ring-pine/10"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-muted">
                 Password
               </label>
               <input
@@ -110,19 +110,19 @@ export default function RegisterPage() {
                 minLength={8}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="mt-2 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-950 placeholder-zinc-400 outline-none transition-all duration-200 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder-zinc-600 dark:focus:border-indigo-500 dark:focus:bg-black"
+                className="mt-2 w-full rounded-xl border border-pine/20 bg-pine/5 px-4 py-3 text-sm text-foreground placeholder-muted outline-none transition-all duration-200 focus:border-pine focus:bg-card focus:ring-4 focus:ring-pine/10"
                 placeholder="At least 8 characters"
               />
             </div>
 
             {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-sm text-red-600 dark:border-red-900/30 dark:bg-red-950/30 dark:text-red-400">
+              <div className="rounded-xl border border-terracotta/30 bg-terracotta/10 p-3.5 text-sm text-terracotta">
                 <div className="flex gap-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
-                    className="h-5 w-5 shrink-0 text-red-500 dark:text-red-400"
+                    className="h-5 w-5 shrink-0 text-terracotta"
                   >
                     <path
                       fillRule="evenodd"
@@ -138,7 +138,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3.5 px-4 text-sm font-semibold text-white shadow-md shadow-indigo-500/10 transition-all duration-200 hover:from-indigo-500 hover:to-violet-500 hover:shadow-lg hover:shadow-indigo-500/20 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-terracotta to-pine py-3.5 px-4 text-sm font-semibold text-white shadow-md shadow-terracotta/20 transition-all duration-200 hover:from-terracotta/90 hover:to-pine/90 hover:shadow-lg hover:shadow-terracotta/30 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
             >
               {isSubmitting ? (
                 <>
@@ -171,11 +171,11 @@ export default function RegisterPage() {
           </form>
 
           {/* Switch Link */}
-          <div className="mt-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
+          <div className="mt-8 text-center text-sm text-muted">
             Already have an account?{" "}
             <Link
               href="/auth/login"
-              className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
+              className="font-semibold text-terracotta hover:text-terracotta/80 transition-colors"
             >
               Sign in
             </Link>

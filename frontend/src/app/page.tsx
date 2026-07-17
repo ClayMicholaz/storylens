@@ -1,5 +1,9 @@
 import { API_BASE_URL } from "@/lib/config";
-import Link from "next/link";
+import Header from "./components/Header";
+import FeaturedArticleCard from "./components/FeaturedArticleCard";
+import SidebarArticleCard from "./components/SidebarArticleCard";
+import ArticleCard from "./components/ArticleCard";
+import EmptyState from "./components/EmptyState";
 
 type Article = {
   id: string;
@@ -20,17 +24,13 @@ type ArticlesResponse = {
   };
 };
 
-async function getArticles(cursor?: string): Promise<ArticlesResponse> {
-  const params = new URLSearchParams({ limit: "20" });
-  if (cursor) params.set("cursor", cursor);
-
-  const res = await fetch(`${API_BASE_URL}/api/articles?${params}`, {
+async function getArticles(): Promise<ArticlesResponse> {
+  const res = await fetch(`${API_BASE_URL}/api/articles?limit=20`, {
     cache: "no-store",
   });
 
   if (!res.ok) {
-    const body = await res.json().catch(() => null);
-    throw new Error(body?.error?.message ?? "Failed to fetch articles");
+    throw new Error("Failed to fetch articles");
   }
 
   return res.json();
@@ -47,58 +47,69 @@ export default async function HomePage() {
     loadError = error instanceof Error ? error.message : "Failed to load articles";
   }
 
+  // Get first article for featured card, next 3 for sidebar, rest for grid
+  const featuredArticle = articles[0];
+  const sidebarArticles = articles.slice(1, 4);
+  const gridArticles = articles.slice(4);
+
   return (
-    <main className="max-w-4xl mx-auto p-6">
-      <div className="flex items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">StoryLens</h1>
-          <p className="text-sm text-gray-500 mt-2">
-            Cut through the noise. Read what matters.
-          </p>
-        </div>
-        <a href="/auth/login" className="text-sm underline">
-          Sign in
-        </a>
-      </div>
-
-      {loadError && (
-        <section className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-900">
-          <p className="font-medium">Articles are temporarily unavailable.</p>
-          <p className="text-sm mt-1">{loadError}</p>
-          <Link href="/" className="inline-block mt-3 underline">
-            Retry
-          </Link>
-        </section>
-      )}
-
-      {!loadError && articles.length === 0 && (
-        <section className="rounded-lg border border-dashed p-8 text-center text-gray-500">
-          No articles are available yet.
-        </section>
-      )}
-
-      <div className="space-y-6">
-        {articles.map((article) => (
-          <article key={article.id} className="border rounded-lg p-4">
-            <h2 className="text-xl font-semibold">{article.title}</h2>
-
-            <p className="text-sm text-gray-500 mt-1">
-              {article.source} • {article.category}
+    <>
+      <Header />
+      
+      <main className="flex-1 bg-[#FEFCF7] min-h-[calc(100vh-88px)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Tagline */}
+          <div className="mb-8 text-center">
+            <p className="text-[#8D99AE] text-sm font-medium">
+              Cut through the noise. Read what matters.
             </p>
+          </div>
 
-            {article.summary && <p className="mt-3">{article.summary}</p>}
+          {loadError && (
+            <div className="mb-8 rounded-2xl border border-[#E07A5F]/30 bg-[#E07A5F]/5 p-6 text-[#E07A5F]">
+              <p className="font-semibold mb-1">Articles are temporarily unavailable.</p>
+              <p className="text-sm">{loadError}</p>
+            </div>
+          )}
 
-            <a
-              href={article.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-4 underline"
-            >
-              Read Original Article
-            </a>
-          </article>
-        ))}
-      </div>
-    </main>
+          {!loadError && articles.length === 0 && (
+            <EmptyState />
+          )}
+
+          {!loadError && articles.length > 0 && (
+            <>
+              {/* Featured + Sidebar Section */}
+              <div className="mb-12 flex flex-col lg:flex-row gap-6">
+                {/* Featured Article */}
+                <div className="flex-1 lg:w-[60%]">
+                  <FeaturedArticleCard article={featuredArticle} />
+                </div>
+
+                {/* Sidebar Articles */}
+                <div className="flex flex-col gap-4 lg:w-[35%]">
+                  {sidebarArticles.map((article) => (
+                    <SidebarArticleCard key={article.id} article={article} />
+                  ))}
+                </div>
+              </div>
+
+              {/* More Articles Grid */}
+              {gridArticles.length > 0 && (
+                <div>
+                  <h2 className="mb-6 text-lg font-bold text-[#2D3748]">
+                    More Stories
+                  </h2>
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {gridArticles.map((article) => (
+                      <ArticleCard key={article.id} article={article} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
