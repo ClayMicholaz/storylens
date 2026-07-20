@@ -26,7 +26,7 @@ export default function Header({ searchQuery = "", onSearchChange }: HeaderProps
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M12 6.042A8 8 0 7018 14.042V16.5A2.5 2.5 0 0115.5 19h-3A2.5 2.5 0 0110 16.5V14.042A8 8 0 0012 6.042z"
+                    d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
               </div>
@@ -82,7 +82,7 @@ export default function Header({ searchQuery = "", onSearchChange }: HeaderProps
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M12 6.042A8 8 0 7018 14.042V16.5A2.5 2.5 0 0115.5 19h-3A2.5 2.5 0 0110 16.5V14.042A8 8 0 0012 6.042z"
+                  d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
             </div>

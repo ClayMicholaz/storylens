@@ -57,7 +57,12 @@ export default function FeaturedArticleCard({ article }: FeaturedArticleCardProp
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M4.5 19.5l15-15M19.5 4.5v15M4.5 9.5h15"
+              d="M10 6H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-4M14 10l8 8"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M22 14l-8-8-4 4"
             />
           </svg>
         </a>
