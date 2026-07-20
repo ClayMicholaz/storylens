@@ -14,8 +14,8 @@ from app.articles.repository import (
 from app.ingestion.pipeline import run_ingestion
 
 
-# Refresh interval in minutes
-REFRESH_INTERVAL_MINUTES = 10
+# Refresh interval in minutes (aligned with hourly scheduler)
+REFRESH_INTERVAL_MINUTES = 60
 
 
 def should_refresh_articles(db: Session) -> bool:

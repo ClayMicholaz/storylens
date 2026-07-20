@@ -50,12 +50,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 def root():
     return {"message": "StoryLens API Running"}
 
-@app.get("/debug")
-async def debug(request: Request):
-    return {
-        "path": request.url.path
-    }
-
 @app.get("/health")
 async def health():
     """Health check endpoint."""

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
@@ -12,15 +12,6 @@ def get_latest_article_timestamp(db: Session) -> Optional[datetime]:
     """Get the timestamp of the most recently published article."""
     result = db.query(func.max(Article.published_date)).scalar()
     return result
-
-
-def get_recent_articles(db: Session):
-    return (
-        db.query(Article)
-        .order_by(Article.published_date.desc())
-        .limit(50)
-        .all()
-    )
 
 
 def get_articles_page(
