@@ -8,15 +8,15 @@ export default function EmptyState({
   description = "Check back later for fresh stories." 
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-      <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-terracotta/10">
+    <div className="flex flex-col items-center justify-center py-12 md:py-16 px-4 text-center">
+      <div className="mb-4 md:mb-6 flex h-16 md:h-20 w-16 md:w-20 items-center justify-center rounded-2xl md:rounded-3xl bg-terracotta/10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="h-10 w-10 text-terracotta"
+          className="h-8 md:h-10 w-8 md:w-10 text-terracotta"
         >
           <path
             strokeLinecap="round"
@@ -25,7 +25,7 @@ export default function EmptyState({
           />
         </svg>
       </div>
-      <h3 className="text-xl font-bold text-[#2D3748] mb-2">{title}</h3>
+      <h3 className="text-lg md:text-xl font-bold text-[#2D3748] mb-1.5 md:mb-2">{title}</h3>
       <p className="text-sm text-muted max-w-sm">{description}</p>
     </div>
   );
