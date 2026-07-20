@@ -19,10 +19,10 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(
     scheduled_ingestion,
     trigger="interval",
-    minutes=1,
+    hours=1,
     max_instances=1,
     coalesce=True,
-    misfire_grace_time=30,
+    misfire_grace_time=300,
 )
 
 
