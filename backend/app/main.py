@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -11,7 +12,18 @@ from app.preferences.router import router as preferences_router
 from app.users.router import router as users_router
 
 
-app = FastAPI(title="StoryLens API")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Manage scheduler lifecycle with FastAPI app."""
+    from app.scheduler.scheduler import scheduler
+    scheduler.start()
+    print("Scheduler started - articles will refresh automatically")
+    yield
+    scheduler.shutdown()
+    print("Scheduler shut down")
+
+
+app = FastAPI(title="StoryLens API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
