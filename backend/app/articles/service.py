@@ -11,7 +11,6 @@ from app.articles.repository import (
     get_articles_page as repo_get_articles_page,
     get_latest_article_timestamp,
 )
-from app.ingestion.pipeline import run_ingestion
 
 
 # Refresh interval in minutes (aligned with hourly scheduler)
