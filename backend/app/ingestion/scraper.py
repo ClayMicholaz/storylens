@@ -4,47 +4,11 @@ from datetime import datetime, timezone
 import time
 from dotenv import load_dotenv
 
+from .feed_loader import NEWS_FEEDS
+
 
 # Load database environment variables just in case we need them later
 load_dotenv()
-
-#Target Feed Registry broken down by category
-NEWS_FEEDS = {
-    "tech": [
-        {
-            "name": "TechCrunch",
-            "url": "https://techcrunch.com/feed/"
-        },
-        {
-            "name": "The Verge",
-            "url": "https://www.theverge.com/rss/index.xml"
-        },
-        {
-            "name": "Ars Technica",
-            "url": "https://feeds.arstechnica.com/arstechnica/index"
-        }
-    ],
-    "world": [
-        {
-            "name": "BBC World News",
-            "url": "http://feeds.bbci.co.uk/news/world/rss.xml"
-        },
-        {
-            "name": "Reuters World",
-            "url": "https://www.reutersagency.com/feed/?best-topics=world-news"
-        }
-    ],
-    "science": [
-        {
-            "name": "NASA Breaking News",
-            "url": "https://www.nasa.gov/news-release/feed/"
-        },
-        {
-            "name": "New Scientist",
-            "url": "https://www.newscientist.com/feed/home/"
-        }
-    ]
-}
 
 def parse_feed(category, source_name, url):
     print(f"Fetching {source_name} ({category.upper()})...")
