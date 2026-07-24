@@ -22,26 +22,41 @@ def get_articles(
     cursor: Optional[str] = None,
     category: Optional[str] = None,
     db: Session = Depends(get_db),
-    background_tasks: BackgroundTasks = None,
+    background_tasks: BackgroundTasks = Depends(),
 ):
     """Get articles with async lazy-refresh using BackgroundTasks.
     
     If articles are stale, triggers background ingestion to refresh them
     without blocking the API response.
     """
+    global _ingestion_in_progress
+    
     # Lazy-refresh: check if we need to fetch new articles
-    needs_refresh = should_refresh_articles(db)
+    try:
+        needs_refresh = should_refresh_articles(db)
+    except Exception as e:
+        print(f"Error checking refresh status: {e}")
+        needs_refresh = False
     
     if needs_refresh:
         # Thread-safe check and set for background ingestion
         with _ingestion_lock:
             if not _ingestion_in_progress:
                 _ingestion_in_progress = True
-                background_tasks.add_task(_run_background_ingestion)
+                try:
+                    background_tasks.add_task(_run_background_ingestion)
+                except Exception as e:
+                    print(f"Error scheduling background ingestion: {e}")
+                    _ingestion_in_progress = False
     
-    items, pagination = get_latest_articles_page(
-        db, limit=limit, cursor=cursor, category=category
-    )
+    try:
+        items, pagination = get_latest_articles_page(
+            db, limit=limit, cursor=cursor, category=category
+        )
+    except Exception as e:
+        print(f"Error fetching articles: {e}")
+        items, pagination = [], {"next_cursor": None, "has_more": False, "limit": limit}
+    
     return {"data": items, "pagination": pagination}
 
 
