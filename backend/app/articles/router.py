@@ -22,10 +22,10 @@ def get_articles(
     cursor: Optional[str] = None,
     category: Optional[str] = None,
     db: Session = Depends(get_db),
-    background_tasks: BackgroundTasks = Depends(),
+    background_tasks: BackgroundTasks = None,
 ):
     """Get articles with async lazy-refresh using BackgroundTasks.
-    
+
     If articles are stale, triggers background ingestion to refresh them
     without blocking the API response.
     """
