@@ -3,9 +3,9 @@ type EmptyStateProps = {
   description?: string;
 };
 
-export default function EmptyState({ 
-  title = "No articles yet", 
-  description = "Check back later for fresh stories." 
+export default function EmptyState({
+  title = "No articles yet",
+  description = "Check back later for fresh stories.",
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 md:py-16 px-4 text-center">
@@ -25,7 +25,7 @@ export default function EmptyState({
           />
         </svg>
       </div>
-      <h3 className="text-lg md:text-xl font-bold text-[#2D3748] mb-1.5 md:mb-2">{title}</h3>
+      <h3 className="text-lg md:text-xl font-bold text-foreground mb-1.5 md:mb-2">{title}</h3>
       <p className="text-sm text-muted max-w-sm">{description}</p>
     </div>
   );

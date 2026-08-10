@@ -5,34 +5,43 @@
   --foreground: #2D3748;
   --card-bg: #FFFFFF;
   --terracotta: #E07A5F;
+  --terracotta-light: #F0A98C;
   --pine: #3D7A65;
+  --pine-light: #5A9A85;
   --muted: #8D99AE;
+  --muted-light: #A8B0BD;
+}
+
+/* Dark theme — custom palette */
+.dark {
+  --background: #010308;
+  --foreground: #D2C8B7;
+  --card-bg: #000000;
+  --terracotta: #1F859F;
+  --terracotta-light: #5FAEDB;
+  --pine: #C2859A;
+  --pine-light: #E0A4B7;
+  --muted: #726672;
+  --muted-light: #A8B0BD;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card-bg);
-  --color-terracotta: #E07A5F;
-  --color-terracotta-light: #F0A98C;
-  --color-pine: #3D7A65;
-  --color-pine-light: #5A9A85;
-  --color-muted: #8D99AE;
-  --color-muted-light: #A8B0BD;
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-light: var(--terracotta-light);
+  --color-pine: var(--pine);
+  --color-pine-light: var(--pine-light);
+  --color-muted: var(--muted);
+  --color-muted-light: var(--muted-light);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1A1A1A;
-    --foreground: #E5E7EB;
-    --card-bg: #252525;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }

@@ -14,7 +14,7 @@ type FeaturedArticleCardProps = {
 
 export default function FeaturedArticleCard({ article }: FeaturedArticleCardProps) {
   return (
-    <article className="group flex h-full flex-col rounded-2xl md:rounded-3xl border border-terracotta/20 bg-white p-4 md:p-6 transition-all duration-300 hover:shadow-xl hover:shadow-terracotta/10 hover:-translate-y-1">
+    <article className="group flex h-full flex-col rounded-2xl md:rounded-3xl border border-terracotta/20 bg-card p-4 md:p-6 transition-all duration-300 hover:shadow-xl hover:shadow-terracotta/10 hover:-translate-y-1">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3 md:mb-4">
         <span className="inline-flex items-center rounded-full bg-terracotta/15 px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-semibold uppercase tracking-wider text-terracotta w-fit">
           Featured
@@ -27,12 +27,12 @@ export default function FeaturedArticleCard({ article }: FeaturedArticleCardProp
         </span>
       </div>
 
-      <h2 className="text-lg md:text-2xl font-bold text-[#2D3748] leading-tight mb-2 md:mb-3 group-hover:text-terracotta transition-colors">
+      <h2 className="text-lg md:text-2xl font-bold text-foreground leading-tight mb-2 md:mb-3 group-hover:text-terracotta transition-colors">
         {article.title}
       </h2>
 
       {article.summary && (
-        <p className="text-sm md:text-base text-[#2D3748]/80 leading-relaxed mb-3 md:mb-4 flex-1">
+        <p className="text-sm md:text-base text-foreground/80 leading-relaxed mb-3 md:mb-4 flex-1">
           {article.summary}
         </p>
       )}

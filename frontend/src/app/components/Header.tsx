@@ -1,15 +1,17 @@
 "use client";
 
+import ThemeToggle from "./ThemeToggle";
+
 export default function Header() {
   return (
-    <header className="sticky top-0 z-10 bg-[#FEFCF7]/80 backdrop-blur-sm border-b border-[#E07A5F]/10">
+    <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-terracotta/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
         {/* Mobile Layout: Stacked vertically */}
         <div className="flex flex-col md:hidden gap-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-2xl bg-linear-to-tr from-[#E07A5F] to-[#3D7A65] flex items-center justify-center shadow-md shadow-[#E07A5F]/20">
+              <div className="h-8 w-8 rounded-2xl bg-linear-to-tr from-terracotta to-pine flex items-center justify-center shadow-md shadow-terracotta/20">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -25,14 +27,17 @@ export default function Header() {
                   />
                 </svg>
               </div>
-              <h1 className="text-xl font-bold text-[#2D3748]">StoryLens</h1>
+              <h1 className="text-xl font-bold text-foreground">StoryLens</h1>
             </div>
-            <a 
-              href="/auth/login" 
-              className="rounded-xl bg-[#E07A5F]/10 px-3 py-1.5 text-sm font-semibold text-[#E07A5F] transition-colors hover:bg-[#E07A5F]/20"
-            >
-              Sign in
-            </a>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <a
+                href="/auth/login"
+                className="rounded-xl bg-terracotta/10 px-3 py-1.5 text-sm font-semibold text-terracotta transition-colors hover:bg-terracotta/20"
+              >
+                Sign in
+              </a>
+            </div>
           </div>
         </div>
 
@@ -40,7 +45,7 @@ export default function Header() {
         <div className="hidden md:flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-2xl bg-linear-to-tr from-[#E07A5F] to-[#3D7A65] flex items-center justify-center shadow-md shadow-[#E07A5F]/20">
+            <div className="h-10 w-10 rounded-2xl bg-linear-to-tr from-terracotta to-pine flex items-center justify-center shadow-md shadow-terracotta/20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -57,18 +62,23 @@ export default function Header() {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-[#2D3748]">StoryLens</h1>
-              <p className="text-[#8D99AE] text-sm font-medium">Cut through the noise. Read what matters.</p>
+              <h1 className="text-2xl font-bold text-foreground">StoryLens</h1>
+              <p className="text-muted text-sm font-medium">
+                Cut through the noise. Read what matters.
+              </p>
             </div>
           </div>
 
-          {/* Auth Links */}
-          <a 
-            href="/auth/login" 
-            className="rounded-xl bg-[#E07A5F]/10 px-4 py-2 text-sm font-semibold text-[#E07A5F] transition-colors hover:bg-[#E07A5F]/20"
-          >
-            Sign in
-          </a>
+          {/* Auth Links + Theme Toggle */}
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <a
+              href="/auth/login"
+              className="rounded-xl bg-terracotta/10 px-4 py-2 text-sm font-semibold text-terracotta transition-colors hover:bg-terracotta/20"
+            >
+              Sign in
+            </a>
+          </div>
         </div>
       </div>
     </header>

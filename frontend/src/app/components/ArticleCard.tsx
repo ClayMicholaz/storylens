@@ -14,7 +14,7 @@ type ArticleCardProps = {
 
 export default function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <article className="group flex h-full flex-col rounded-xl md:rounded-2xl border border-terracotta/15 bg-white p-4 md:p-5 transition-all duration-300 hover:shadow-lg hover:shadow-terracotta/5 hover:-translate-y-0.5">
+    <article className="group flex h-full flex-col rounded-xl md:rounded-2xl border border-terracotta/15 bg-card p-4 md:p-5 transition-all duration-300 hover:shadow-lg hover:shadow-terracotta/5 hover:-translate-y-0.5">
       <div className="flex items-center gap-2 mb-2 md:mb-3">
         <span className="inline-flex items-center rounded-full bg-terracotta/10 px-2 py-0.5 md:px-2.5 md:py-0.5 text-xs font-medium uppercase tracking-wider text-terracotta">
           {article.category}
@@ -24,12 +24,12 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         </span>
       </div>
 
-      <h2 className="text-base md:text-lg font-bold text-[#2D3748] leading-tight mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
+      <h2 className="text-base md:text-lg font-bold text-foreground leading-tight mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
         {article.title}
       </h2>
 
       {article.summary && (
-        <p className="text-xs md:text-sm text-[#2D3748]/70 leading-relaxed mb-3 md:mb-4 line-clamp-3 flex-1">
+        <p className="text-xs md:text-sm text-foreground/70 leading-relaxed mb-3 md:mb-4 line-clamp-3 flex-1">
           {article.summary}
         </p>
       )}
