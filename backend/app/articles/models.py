@@ -3,6 +3,8 @@ import uuid
 
 from sqlalchemy import Text, DateTime, String, Index
 from sqlalchemy.orm import Mapped, mapped_column
+from pgvector.sqlalchemy import Vector
+
 from app.database.base import Base
 
 
@@ -18,12 +20,27 @@ class Article(Base):
     source: Mapped[str] = mapped_column(Text, nullable=False)
     url: Mapped[str] = mapped_column(Text, nullable=False)
 
-    published_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    published_date: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
 
     category: Mapped[str] = mapped_column(Text, nullable=False)
 
-    article_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
-    content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    article_hash: Mapped[str] = mapped_column(
+        String(64),
+        unique=True,
+        nullable=False,
+    )
+    content_hash: Mapped[str] = mapped_column(
+        String(64),
+        nullable=False,
+    )
+
+    embedding: Mapped[list[float] | None] = mapped_column(
+        Vector(768),
+        nullable=True,
+    )
 
     __table_args__ = (
         Index("ix_articles_published_id", "published_date", "id"),

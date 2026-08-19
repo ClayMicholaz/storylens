@@ -1,10 +1,11 @@
-import os
 import hashlib
+
 from dotenv import load_dotenv
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from app.database.session import SessionLocal
 from app.articles.models import Article
 from app.ingestion.scraper import run_collector
+from app.embeddings.service import embedding_service
 
 load_dotenv()
 
@@ -33,11 +34,10 @@ def normalize_articles(articles):
     return cleaned
 
 
-# INSERT USING SQLALCHEMY — bulk fetch + bulk upsert
 def insert_articles(session, articles):
     if not articles:
         print("No articles to insert")
-        return
+        return []
 
     incoming_hashes = [a["article_hash"] for a in articles]
 
@@ -48,13 +48,17 @@ def insert_articles(session, articles):
         .all()
     }
 
-    new_articles = [a for a in articles if a["article_hash"] not in existing_hashes]
+    new_articles = [
+        a for a in articles
+        if a["article_hash"] not in existing_hashes
+    ]
+
     skipped = len(articles) - len(new_articles)
 
     if not new_articles:
         print(f"Inserted: 0")
         print(f"Skipped duplicates: {skipped}")
-        return
+        return []
 
     rows = [
         {
@@ -72,14 +76,77 @@ def insert_articles(session, articles):
     ]
 
     stmt = pg_insert(Article).values(rows)
-    stmt = stmt.on_conflict_do_nothing(index_elements=["article_hash"])
+    stmt = stmt.on_conflict_do_nothing(
+        index_elements=["article_hash"]
+    )
+
     result = session.execute(stmt)
     session.commit()
 
-    inserted = result.rowcount if result.rowcount is not None else len(rows)
+    inserted = result.rowcount if result.rowcount is not None else 0
+
     print(f"Inserted: {inserted}")
     print(f"Skipped duplicates: {skipped + (len(rows) - inserted)}")
 
+    # Fetch the actual newly inserted articles.
+    inserted_hashes = [a["article_hash"] for a in new_articles]
+
+    inserted_articles = (
+        session.query(Article)
+        .filter(Article.article_hash.in_(inserted_hashes))
+        .all()
+    )
+
+    return inserted_articles
+
+
+def generate_embeddings(session, articles):
+    if not articles:
+        print("No new articles need embeddings")
+        return
+
+    print(f"Generating embeddings for {len(articles)} new articles...")
+
+    succeeded = 0
+    failed = 0
+
+    for article in articles:
+        try:
+            embedding = embedding_service.generate(
+                article.title,
+                article.summary or "",
+            )
+
+            article.embedding = embedding
+            session.commit()
+
+            succeeded += 1
+
+            print(f"Embedded: {article.title[:80]}")
+
+        except Exception as e:
+            session.rollback()
+
+            error_text = str(e)
+
+            if "429" in error_text or "RESOURCE_EXHAUSTED" in error_text:
+                print(
+                    "Gemini quota exhausted. "
+                    "Stopping embedding generation for this run."
+                )
+                break
+
+            failed += 1
+
+            print(
+                f"Embedding failed for "
+                f"{article.title[:80]}: {e}"
+            )
+
+    print(
+        f"Embedding complete: "
+        f"{succeeded} succeeded, {failed} failed"
+    )
 
 # PIPELINE
 def run_ingestion():
@@ -95,10 +162,14 @@ def run_ingestion():
     session = SessionLocal()
 
     try:
-        insert_articles(session, articles)
+        new_articles = insert_articles(session, articles)
+
+        generate_embeddings(session, new_articles)
+
     except Exception as e:
         session.rollback()
         print(f"Database error: {e}")
+
     finally:
         session.close()
 
