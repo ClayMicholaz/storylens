@@ -10,6 +10,7 @@ from app.auth.router import router as auth_router
 from app.articles.router import router as articles_router
 from app.preferences.router import router as preferences_router
 from app.users.router import router as users_router
+from app.recommendations.router import router as recommendations_router
 
 
 @asynccontextmanager
@@ -61,3 +62,4 @@ app.include_router(articles_router, prefix="/api", tags=["Articles"])
 app.include_router(auth_router, prefix="/api", tags=["Auth"])
 app.include_router(preferences_router, prefix="/api", tags=["Preferences"])
 app.include_router(users_router, prefix="/api", tags=["Users"])
+app.include_router(recommendations_router, prefix="/api", tags=["Recommendations"])
