@@ -1,34 +1,60 @@
 "use client";
 
-import { FiMoon, FiSun } from "react-icons/fi";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
+import { FiMoon, FiSun } from "react-icons/fi";
+
+const emptySubscribe = () => () => {};
+
+function useMounted() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true, // client snapshot: we're mounted
+    () => false, // server snapshot: not mounted yet
+  );
+}
 
 export default function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useMounted();
+
+  const isDark = resolvedTheme === "dark";
 
   const toggleTheme = () => {
-    const isDark = document.documentElement.classList.contains("dark");
-
     setTheme(isDark ? "light" : "dark");
   };
 
-  return (
-    <button
-      type="button"
-      onClick={toggleTheme}
-      aria-label="Toggle theme"
-      className="
+    if (!mounted) {
+      return (
+        <button
+          type="button"
+          aria-label="Toggle theme"
+          className="flex h-9 w-9 items-center justify-center rounded-xl bg-terracotta/10 text-terracotta cursor-pointer"
+        >
+          <span className="sr-only">Toggle theme</span>
+          <FiMoon className="h-5 w-5" />
+        </button>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        onClick={toggleTheme}
+        className={`
         flex h-9 w-9 items-center justify-center rounded-xl
-        bg-gray-100 dark:bg-gray-800
-      "
-    >
-      {/* Light mode icon */}
-      <FiMoon className="block h-5 w-5 dark:hidden" />
-
-      {/* Dark mode icon */}
-      <FiSun className="hidden h-5 w-5 dark:block" />
-
-      <span className="sr-only">Toggle theme</span>
-    </button>
-  );
+        bg-terracotta/10 text-terracotta transition-colors cursor-pointer
+        hover:bg-terracotta/20
+        dark:bg-pine/10 dark:text-pine dark:hover:bg-pine/20
+      `}
+      >
+        <span className="sr-only">Toggle theme</span>
+        {isDark ? (
+          <FiSun className="h-5 w-5" />
+        ) : (
+          <FiMoon className="h-5 w-5" />
+        )}
+      </button>
+    );
 }
