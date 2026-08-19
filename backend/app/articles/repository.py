@@ -28,8 +28,25 @@ def get_articles_page(
 
     if cursor_pd is not None and cursor_id is not None:
         query = query.filter(
-            tuple_(Article.published_date, Article.id) < (cursor_pd, cursor_id)
+            tuple_(Article.published_date, Article.id)
+            < (cursor_pd, cursor_id)
         )
 
-    query = query.order_by(desc(Article.published_date), desc(Article.id))
+    query = query.order_by(
+        desc(Article.published_date),
+        desc(Article.id)
+    )
+
     return query.limit(limit + 1).all()
+
+
+def get_article_by_id(
+    db: Session,
+    article_id: UUID,
+) -> Optional[Article]:
+    """Get a single article by ID."""
+    return (
+        db.query(Article)
+        .filter(Article.id == article_id)
+        .first()
+    )

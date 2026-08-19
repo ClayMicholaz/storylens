@@ -10,6 +10,7 @@ from app.articles.models import Article
 from app.articles.repository import (
     get_articles_page as repo_get_articles_page,
     get_latest_article_timestamp,
+    get_article_by_id as repo_get_article_by_id,
 )
 
 
@@ -63,3 +64,10 @@ def get_latest_articles_page(
         "has_more": has_more,
         "limit": limit,
     }
+
+def get_article(
+    db: Session,
+    article_id: UUID,
+) -> Optional[Article]:
+    """Get a single article by ID."""
+    return repo_get_article_by_id(db, article_id)

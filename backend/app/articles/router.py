@@ -1,13 +1,25 @@
 import threading
 from typing import Optional
+from uuid import UUID
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Query
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    HTTPException,
+    Query,
+)
 from sqlalchemy.orm import Session
 
 from app.database.session import get_db
-from app.articles.schemas import PaginatedArticles
-from app.articles.service import get_latest_articles_page, should_refresh_articles
+from app.articles.schemas import ArticleResponse, PaginatedArticles
+from app.articles.service import (
+    get_article,
+    get_latest_articles_page,
+    should_refresh_articles,
+)
 from app.ingestion.pipeline import run_ingestion
+
 
 router = APIRouter()
 
@@ -30,39 +42,72 @@ def get_articles(
     without blocking the API response.
     """
     global _ingestion_in_progress
-    
+
     # Lazy-refresh: check if we need to fetch new articles
     try:
         needs_refresh = should_refresh_articles(db)
     except Exception as e:
         print(f"Error checking refresh status: {e}")
         needs_refresh = False
-    
+
     if needs_refresh:
         # Thread-safe check and set for background ingestion
         with _ingestion_lock:
             if not _ingestion_in_progress:
                 _ingestion_in_progress = True
+
                 try:
                     background_tasks.add_task(_run_background_ingestion)
                 except Exception as e:
                     print(f"Error scheduling background ingestion: {e}")
                     _ingestion_in_progress = False
-    
+
     try:
         items, pagination = get_latest_articles_page(
-            db, limit=limit, cursor=cursor, category=category
+            db,
+            limit=limit,
+            cursor=cursor,
+            category=category,
         )
     except Exception as e:
         print(f"Error fetching articles: {e}")
-        items, pagination = [], {"next_cursor": None, "has_more": False, "limit": limit}
-    
-    return {"data": items, "pagination": pagination}
+        items, pagination = [], {
+            "next_cursor": None,
+            "has_more": False,
+            "limit": limit,
+        }
+
+    return {
+        "data": items,
+        "pagination": pagination,
+    }
+
+
+@router.get("/articles/{article_id}", response_model=ArticleResponse)
+def get_article_by_id(
+    article_id: UUID,
+    db: Session = Depends(get_db),
+):
+    """Get a single article by ID."""
+
+    article = get_article(
+        db,
+        article_id=article_id,
+    )
+
+    if article is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Article not found",
+        )
+
+    return article
 
 
 def _run_background_ingestion():
     """Wrapper for ingestion to track its state and handle errors."""
     global _ingestion_in_progress
+
     try:
         run_ingestion()
     except Exception as e:
