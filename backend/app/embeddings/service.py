@@ -2,6 +2,7 @@ import os
 
 from google import genai
 
+
 EMBEDDING_MODEL = "gemini-embedding-2"
 EMBEDDING_DIMENSION = 768
 
@@ -15,11 +16,8 @@ class EmbeddingService:
 
         self.client = genai.Client(api_key=api_key)
 
-    def generate(self, title: str, summary: str) -> list[float]:
-        title = title or ""
-        summary = summary or ""
-
-        text = f"{title}. {summary}"
+    def generate_text(self, text: str) -> list[float]:
+        text = text or ""
 
         result = self.client.models.embed_content(
             model=EMBEDDING_MODEL,
@@ -38,6 +36,18 @@ class EmbeddingService:
             )
 
         return embedding
+
+    def generate(
+        self,
+        title: str,
+        summary: str | None,
+    ) -> list[float]:
+        title = title or ""
+        summary = summary or ""
+
+        text = f"{title}. {summary}"
+
+        return self.generate_text(text)
 
 
 embedding_service = EmbeddingService()
